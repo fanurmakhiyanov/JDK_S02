@@ -5,63 +5,58 @@ package ru.geekbrains.lesson02;
  * и далее вызывался метод developGUI(), * не изменяя существующие интерфейсы, только код основного класса.
  */
 
-import java.util.Arrays;
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        FullStack dev = new DeveloperFull();
-        BackEnder backDev = new DeveloperBack();
-        List<BackEnder> devList = Arrays.asList(dev, backDev);
+        ImplFullStack dev = new ImplFullStack();
+        ImplBackEnd backEnd = new ImplBackEnd();
 
-        for (BackEnder e: devList) {
-            e.createServer();
-        }
+        List<BackEnder> list = List.of(dev,backEnd);
+        list.stream().forEach(x -> x.createServer());
 
-//        Developer dev = new FrontendDeveloper();
-//        if (dev instanceof Frontender) {
-//        ((Frontender) dev).developGUI();
+        Developer devFront = new FrontEnder(){
+            @Override
+            public void createFront() {
+                System.out.println("Create Frontend");
+            }
+        };
+        ((FrontEnder)devFront).createFront();
 
-//        dev.createServer();
-//        dev.createFront();
-//        backDev.createServer();
     }
 }
 
-interface BackEnder {
+interface BackEnder extends Developer{
     void createServer();
 }
 
-interface FrontEnder {
+interface FrontEnder extends Developer{
     void createFront();
 }
 
 interface FullStack extends BackEnder, FrontEnder {
-
 }
 
-class DeveloperFull implements FullStack {
+class ImplFullStack implements FullStack{
 
     @Override
     public void createServer() {
-        System.out.println("Сделали сервер");
+        System.out.println("Server start!");
     }
 
     @Override
     public void createFront() {
-        System.out.println("Покрасили кнопку в красный");
+        System.out.println("Front start!");
     }
 }
 
-class DeveloperBack implements BackEnder{
+class ImplBackEnd implements BackEnder {
 
     @Override
     public void createServer() {
-        System.out.println("Уронили сервер");
+        System.out.println("Drop server");
     }
 }
 
-//    Developer dev = new FrontendDeveloper();
-//if (dev instanceof Frontender) {
-//        ((Frontender) dev).developGUI();
-
+interface Developer{
+}
